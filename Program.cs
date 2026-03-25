@@ -32,6 +32,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ReceiptService>();
 
 
 var app = builder.Build();
