@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ReceiptProject1.Data;
-using ReceiptProject1.DTOs.ItemDTOs;
 using ReceiptProject1.DTOs.ReceiptDTOs;
-using ReceiptProject1.Models;
 using ReceiptProject1.Services;
 using System.Security.Claims;
 
@@ -36,18 +32,19 @@ public class ReceiptController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateReceiptDTO dto)
+    public async Task<IActionResult> Create([FromBody]CreateReceiptDTO crdto)
     {
-        var receipt = await _receiptService.CreateAsync(dto, GetUserId());
+        var receipt = await _receiptService.CreateAsync(crdto, GetUserId());
         return CreatedAtAction(nameof(GetById), new { id = receipt.Id }, receipt);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, UpdateReceiptDTO dto)
+    public async Task<IActionResult> Update(int id,[FromBody] UpdateReceiptDTO urdto)
     {
-        var success = await _receiptService.UpdateAsync(id, dto, GetUserId());
-        return success ? NoContent() : NotFound();
+        var updated = await _receiptService.UpdateAsync(id, urdto, GetUserId());
+        return updated == null ? NotFound() : Ok(updated);
     }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)

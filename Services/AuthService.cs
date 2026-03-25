@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace ReceiptProject1.Services
 {
@@ -21,13 +22,14 @@ namespace ReceiptProject1.Services
         }
         public async Task<bool> Register(RegisterDTO rdto)
         {
-            if (_db.Users.Any(u => u.EmailAdress == rdto.EmailAdress))
+            if ( await _db.Users.AnyAsync(u => u.EmailAdress == rdto.EmailAdress))
                 return false;
 
             var user = new User
             {
                 EmailAdress = rdto.EmailAdress,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(rdto.Password)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(rdto.Password),
+                CreatedAt = DateTime.UtcNow
             };
 
             _db.Users.Add(user);
@@ -35,7 +37,7 @@ namespace ReceiptProject1.Services
             return true;
         }
 
-        public string? Login(LoginDTO ldto)
+        public async Task<string?> Login(LoginDTO ldto)
         {
             var user = _db.Users.SingleOrDefault(u => u.EmailAdress == ldto.EmailAdress);
             if (user == null || !BCrypt.Net.BCrypt.Verify(ldto.Password, user.PasswordHash))

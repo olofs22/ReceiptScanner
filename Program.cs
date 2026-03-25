@@ -4,6 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using ReceiptProject1.Data;
 using ReceiptProject1.Services;
 using System.Text;
+using ReceiptProject1.Middleware;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using ReceiptProject1.Validators;
+using ReceiptProject1.DTOs.ReceiptDTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,16 +32,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
         };
     });
-
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<IValidator<CreateReceiptDTO>, CreateReceiptValidator>();
+builder.Services.AddScoped<IValidator<UpdateReceiptDTO>, UpdateReceiptValidator>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ReceiptService>();
 
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

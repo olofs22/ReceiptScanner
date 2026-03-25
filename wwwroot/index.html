@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Auth Section -->
+    <div id="auth-section">
+        <h1>Receipt App</h1>
+
+        <div id="login-form">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email" />
+            <input type="password" id="login-password" placeholder="Password" />
+            <button onclick="login()">Login</button>
+            <p>No account? <a href="#" onclick="showRegister()">Register</a></p>
+            <p id="login-error" class="error"></p>
+        </div>
+
+        <div id="register-form" style="display:none">
+            <h2>Register</h2>
+            <input type="email" id="register-email" placeholder="Email" />
+            <input type="password" id="register-password" placeholder="Password" />
+            <button onclick="register()">Register</button>
+            <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            <p id="register-message"></p>
+        </div>
+    </div>
+
+    <!-- Receipts Section -->
+    <div id="receipts-section" style="display:none">
+        <div class="header">
+            <h1>My Receipts</h1>
+            <button onclick="logout()">Logout</button>
+        </div>
+        <button onclick="toggleForm()">+ New Receipt</button>
+
+        <!-- Create Receipt Form -->
+        <div id="receipt-form" style="display:none">
+            <h3>New Receipt</h3>
+            <input type="text" id="store-name" placeholder="Store name" />
+            <input type="date" id="receipt-date" />
+            <div id="items-container">
+                <div class="item-row">
+                    <input type="text" placeholder="Item title" class="item-title" />
+                    <input type="number" placeholder="Price" class="item-price" />
+                    <input type="number" placeholder="Qty" class="item-qty" value="1" />
+                </div>
+            </div>
+            <button onclick="addItemRow()">+ Add Item</button>
+            <button onclick="createReceipt()">Save Receipt</button>
+            <p id="form-error" class="error"></p>
+        </div>
+
+        <!-- Receipts List -->
+        <div id="receipts-list"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

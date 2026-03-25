@@ -29,7 +29,8 @@ namespace ReceiptProject1.Services
                     {
                         Id = i.Id,
                         Title = i.Title,
-                        Price = i.Price
+                        Price = i.Price,
+                        Quantity = i.Quantity
                     }).ToList()
                 })
                 .ToListAsync();
@@ -48,7 +49,8 @@ namespace ReceiptProject1.Services
                     {
                         Id = i.Id,
                         Title = i.Title,
-                        Price = i.Price
+                        Price = i.Price,
+                        Quantity = i.Quantity
                     }).ToList()
                 })
             .FirstOrDefaultAsync();
@@ -63,7 +65,8 @@ namespace ReceiptProject1.Services
                 Items = crdto.Items.Select(i => new Item
                 {
                     Title = i.Title,
-                    Price = i.Price
+                    Price = i.Price,
+                    Quantity = i.Quantity == 0 ? 1 : i.Quantity
                 }).ToList()
             };
             _db.Receipts.Add(receipt);
@@ -71,13 +74,13 @@ namespace ReceiptProject1.Services
             return receipt;
         }
 
-        public async Task<bool> UpdateAsync(int id, UpdateReceiptDTO dto, int userId)
+        public async Task<ReceiptDTO?> UpdateAsync(int id, UpdateReceiptDTO dto, int userId)
         {
             var receipt = await _db.Receipts
                 .Include(r => r.Items)
                 .FirstOrDefaultAsync(r => r.Id == id && r.UserId == userId);
 
-            if (receipt == null) return false;
+            if (receipt == null) return null;
 
             receipt.StoreName = dto.StoreName;
             receipt.Date = dto.Date;
@@ -108,7 +111,6 @@ namespace ReceiptProject1.Services
                 }
                 else
                 {
-                    // Add new item
                     receipt.Items.Add(new Item
                     {
                         Title = itemDto.Title,
@@ -119,7 +121,20 @@ namespace ReceiptProject1.Services
             }
 
             await _db.SaveChangesAsync();
-            return true;
+
+            return new ReceiptDTO
+            {
+                Id = receipt.Id,
+                StoreName = receipt.StoreName,
+                Date = receipt.Date,
+                Items = receipt.Items.Select(i => new ItemDTO
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Price = i.Price,
+                    Quantity = i.Quantity
+                }).ToList()
+            };
         }
 
         public async Task<bool> DeleteAsync(int id, int userId)

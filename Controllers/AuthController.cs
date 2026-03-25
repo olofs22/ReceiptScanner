@@ -15,7 +15,7 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
     [HttpPost("register")]
-    public async Task<IActionResult> Register (RegisterDTO rdto)
+    public async Task<IActionResult> Register ([FromBody] RegisterDTO rdto)
     {
         var success = await _authService.Register(rdto);
         if (!success)
@@ -24,9 +24,9 @@ public class AuthController : ControllerBase
         return Ok("User registered successfully!");
     }
     [HttpPost("login")]
-    public IActionResult Login(LoginDTO ldto)
+    public async Task<IActionResult> Login([FromBody] LoginDTO ldto)
     {
-        var token = _authService.Login(ldto);
+        var token = await _authService.Login(ldto);
         if (token == null)
             return Unauthorized("Invalid email adress or password.");
 
