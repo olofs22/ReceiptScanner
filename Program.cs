@@ -18,6 +18,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("JWT Key is not configured.");
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.WithOrigins("http://192.168.1.185:5174")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -37,7 +47,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<IValidator<CreateReceiptDTO>, CreateReceiptValidator>();
@@ -47,9 +56,8 @@ builder.Services.AddScoped<ReceiptService>();
 
 
 var app = builder.Build();
-
+app.UseCors("AllowAll");
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
