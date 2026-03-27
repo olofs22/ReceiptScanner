@@ -1,0 +1,64 @@
+[33m3330ff2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m)[m working with claude vision api, testing on phone, scans receipts and makes objects and saves to database, security, swish api, styling left
+.gitignore
+Controllers/ReceiptController.cs
+Program.cs
+Properties/launchSettings.json
+ReceiptProject1.csproj
+Services/ScanService.cs
+appsettings.json
+[33m1a25687[m[33m ([m[1;31morigin/dev[m[33m)[m working withfrontend
+Program.cs
+[33mb2d1598[m latest, trying to connect to frontend
+Program.cs
+ReceiptProject1.csproj
+wwwroot/app.js
+wwwroot/index.html
+wwwroot/style.css
+[33m149c226[m frontend added, working login/logout and communication with database, receipts are only visible for the right user. needs more faulthandling for the user to see. Needs better security features.
+Controllers/AuthController.cs
+Controllers/ReceiptController.cs
+Middleware/ExceptionMiddleWare.cs
+Program.cs
+ReceiptProject1.csproj
+Services/AuthService.cs
+Services/ReceiptService.cs
+Validators/CreateReceiptValidator.cs
+Validators/UpdateReceiptValidator.cs
+wwwroot/app.js
+wwwroot/index.html
+wwwroot/style.css
+[33m9d3b3f4[m working endpoints
+Controllers/ReceiptController.cs
+DTOs/ItemDTOs/UpdateItemDTO.cs
+DTOs/ReceiptDTOs/UpdateReceiptDTO.cs
+Program.cs
+Services/ReceiptService.cs
+[33m4e7478b[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m Add project files.
+Controllers/AuthController.cs
+Controllers/ReceiptController.cs
+DTOs/AuthDTOs/AuthResponseDTO.cs
+DTOs/AuthDTOs/LoginDTO.cs
+DTOs/AuthDTOs/RegisterDTO.cs
+DTOs/ItemDTOs/CreateItemDTOs.cs
+DTOs/ItemDTOs/ItemDTOs.cs
+DTOs/ReceiptDTOs/CreateReceiptDTO.cs
+DTOs/ReceiptDTOs/ReceiptDTOs.cs
+Data/AppDbContext.cs
+Migrations/20260325134800_InitialCreate.Designer.cs
+Migrations/20260325134800_InitialCreate.cs
+Migrations/AppDbContextModelSnapshot.cs
+Models/Item.cs
+Models/Receipt.cs
+Models/User.cs
+Program.cs
+Properties/launchSettings.json
+ReceiptProject1.csproj
+ReceiptProject1.http
+ReceiptProject1.slnx
+Services/AuthService.cs
+Services/ReceiptService.cs
+appsettings.Development.json
+appsettings.json
+[33m875f0f1[m Add .gitattributes and .gitignore.
+.gitattributes
+.gitignore
