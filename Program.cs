@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:5174")
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -53,7 +53,7 @@ builder.Services.AddScoped<IValidator<CreateReceiptDTO>, CreateReceiptValidator>
 builder.Services.AddScoped<IValidator<UpdateReceiptDTO>, UpdateReceiptValidator>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ReceiptService>();
-
+builder.Services.AddScoped<ScanService>();
 
 var app = builder.Build();
 app.UseCors("AllowAll");

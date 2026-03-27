@@ -11,11 +11,14 @@ namespace ReceiptProject1.Controllers;
 [Route("api/[controller]")]
 public class ReceiptController : ControllerBase
 {
+    private readonly ScanService _scanService;
+
     private readonly ReceiptService _receiptService;
 
-    public ReceiptController(ReceiptService receiptService)
+    public ReceiptController(ReceiptService receiptService, ScanService scanService)
     {
         _receiptService = receiptService;
+        _scanService = scanService;
     }
 
     private int GetUserId() => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
@@ -51,6 +54,21 @@ public class ReceiptController : ControllerBase
     {
         var success = await _receiptService.DeleteAsync(id, GetUserId());
         return success ? NoContent() : NotFound();
+    }
+
+    [HttpPost("scan")]
+    public async Task<IActionResult> Scan([FromForm] IFormFile image)
+    {
+        try
+        {
+            var dto = await _scanService.ScanReceiptAsync(image);
+            return Ok(dto);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"SCAN ERROR: {ex.Message}");
+            return BadRequest(ex.Message);
+        }
     }
 }
 
